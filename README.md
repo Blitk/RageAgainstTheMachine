@@ -56,6 +56,11 @@ Para limpar os objetos intermediários e recompilar do zero:
 make rebuild
 ```
 
+Para Clang:
+```bash
+make CC=clang
+```
+
 O binário compilado estará disponível no diretório **./bin/ratm.**
 
 ---
