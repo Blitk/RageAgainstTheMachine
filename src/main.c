@@ -29,8 +29,6 @@ void print_banner(void) {
         "  █   [ VER  ]  %-36s █\n"
         "  █                                                  █\n"
         "  █   > HIGH-PERFORMANCE C PURE ENGINE               █\n"
-        "  █   > CYBER WARFARE // OFFENSIVE SECURITY          █\n"
-        "  █   > ACCESS GRANTED: OPERATOR                     █\n"
         "  █                                                  █\n"
         "  ▀████████████████████████████████████████████████▀\n",
         RATM_NAME,
