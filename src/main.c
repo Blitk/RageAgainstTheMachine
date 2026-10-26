@@ -4,20 +4,16 @@
 #include <unistd.h>
 #include <time.h>
 
-// Inclusão dos cabeçalhos dos nossos módulos
-#include "recon.h"
-#include "auth.h"
-#include "evasion.h"
-#include "tunnel.h"
+// Cabeçalho mestre que centraliza todos os módulos e macros
+#include "ratm.h"
 
-// Função para exibir o Banner ASCII de boas-vindas do Framework
 void print_banner() {
-    printf("\033[1;31m"); // Cor Vermelha agressiva para Red Team
+    printf(COLOR_RED);
     printf("=========================================================\n");
-    printf("     RageAgainstTheMachine (ratm) - Red Team Framework   \n");
+    printf("     %s (ratm) v%s - Red Team Framework   \n", RATM_NAME, RATM_VERSION);
     printf("     High-Performance C Pure Engine                      \n");
     printf("=========================================================\n");
-    printf("\033[0m");
+    printf(COLOR_RESET);
 }
 
 void print_usage(const char *prog_name) {
@@ -47,23 +43,23 @@ int main(int argc, char *argv[]) {
     // Modo 1: Ghost Discovery (Recon)
     if (strcmp(argv[1], "recon") == 0) {
         if (argc < 4) {
-            printf("[-] Uso correto: %s recon <IP_ALVO> <PORTA>\n", argv[0]);
+            LOG_ERROR("Uso correto: %s recon <IP_ALVO> <PORTA>", argv[0]);
             return 1;
         }
 
         print_banner();
         char local_ip[64];
         if (get_local_ip(local_ip, sizeof(local_ip)) == 0) {
-            printf("[+] IP Local detectado automaticamente: %s\n", local_ip);
+            LOG_SUCCESS("IP Local detectado automaticamente: %s", local_ip);
         } else {
             strcpy(local_ip, "192.168.1.10"); // Fallback padrão
-            printf("[!] Usando IP padrão de fallback: %s\n", local_ip);
+            LOG_WARN("Usando IP padrão de fallback: %s", local_ip);
         }
 
         const char *target_ip = argv[2];
         int target_port = atoi(argv[3]);
 
-        printf("[*] Iniciando Ghost Discovery contra %s na porta %d...\n", target_ip, target_port);
+        LOG_INFO("Iniciando Ghost Discovery contra %s na porta %d...", target_ip, target_port);
         
         // Envia o pacote de varredura
         send_ghost_syn(local_ip, target_ip, target_port);
@@ -74,7 +70,7 @@ int main(int argc, char *argv[]) {
     // Modo 2: Adaptive Auth Engine (Auth)
     else if (strcmp(argv[1], "auth") == 0) {
         if (argc < 6) {
-            printf("[-] Uso correto: %s auth <IP> <PORTA> <USUARIO> <SENHA>\n", argv[0]);
+            LOG_ERROR("Uso correto: %s auth <IP> <PORTA> <USUARIO> <SENHA>", argv[0]);
             return 1;
         }
 
@@ -84,17 +80,17 @@ int main(int argc, char *argv[]) {
         const char *username = argv[4];
         const char *password = argv[5];
 
-        printf("[*] Acionando Adaptive Auth Engine contra %s:%d...\n", target_ip, port);
+        LOG_INFO("Acionando Adaptive Auth Engine contra %s:%d...", target_ip, port);
         adaptive_brute_launch(target_ip, port, username, password, 1);
     }
     // Modo 3: Hook & Defense Auditor (Evasion)
     else if (strcmp(argv[1], "evasion") == 0) {
         print_banner();
-        printf("[*] Executando auditoria de ambiente e EDR hooks...\n");
+        LOG_INFO("Executando auditoria de ambiente e EDR hooks...");
         
         // Testando hash de API
         uint32_t hash_sample = calculate_hash("NtAllocateVirtualMemory");
-        printf("[+] Hash gerado para API crítica (Oculto estaticamente): 0x%X\n", hash_sample);
+        LOG_SUCCESS("Hash gerado para API crítica (Oculto estaticamente): 0x%X", hash_sample);
 
         // Executando exemplo de auditoria e syscall
         audit_user_hooks((void *)main);
@@ -103,7 +99,7 @@ int main(int argc, char *argv[]) {
     // Modo 4: Protocol Camouflage & Tunneling (Tunnel)
     else if (strcmp(argv[1], "tunnel") == 0) {
         if (argc < 5) {
-            printf("[-] Uso correto: %s tunnel <http|dns> <IP_ALVO> <DADOS/PAYLOAD>\n", argv[0]);
+            LOG_ERROR("Uso correto: %s tunnel <http|dns> <IP_ALVO> <DADOS/PAYLOAD>", argv[0]);
             return 1;
         }
 
@@ -113,13 +109,13 @@ int main(int argc, char *argv[]) {
             encode_dns_tunnel(argv[4], dns_buffer, sizeof(dns_buffer));
         } else if (strcmp(argv[2], "http") == 0) {
             if (argc < 6) {
-                printf("[-] Uso correto para HTTP: %s tunnel http <IP_ALVO> <PORTA> <PAYLOAD>\n", argv[0]);
+                LOG_ERROR("Uso correto para HTTP: %s tunnel http <IP_ALVO> <PORTA> <PAYLOAD>", argv[0]);
                 return 1;
             }
             int port = atoi(argv[4]);
             send_camouflaged_http_heartbeat(argv[3], port, argv[5]);
         } else {
-            printf("[-] Tipo de túnel desconhecido. Use 'dns' ou 'http'.\n");
+            LOG_ERROR("Tipo de túnel desconhecido. Use 'dns' ou 'http'.");
         }
     } else {
         print_banner();
