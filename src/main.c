@@ -7,12 +7,42 @@
 // Cabeçalho mestre que centraliza todos os módulos e macros
 #include "ratm.h"
 
-void print_banner() {
+void print_banner(void) {
     printf(COLOR_RED);
-    printf("=========================================================\n");
-    printf("     %s (ratm) v%s - Red Team Framework   \n", RATM_NAME, RATM_VERSION);
-    printf("     High-Performance C Pure Engine                      \n");
-    printf("=========================================================\n");
+    printf(
+        "██████╗  █████╗ ████████╗███╗   ███╗\n"
+        "██╔══██╗██╔══██╗╚══██╔══╝████╗ ████║\n"
+        "██████╔╝███████║   ██║   ██╔████╔██║\n"
+        "██╔══██╗██╔══██║   ██║   ██║╚██╔╝██║\n"
+        "██║  ██║██║  ██║   ██║   ██║ ╚═╝ ██║\n"
+        "╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝     ╚═╝\n"
+    );
+
+    printf(COLOR_RESET);
+
+    printf(COLOR_RED);
+    printf(
+        "  ▄████████████████████████████████████████████████▄\n"
+        "  █                                                  █\n"
+        "  █   [ RATM ]  RED TEAM FRAMEWORK                   █\n"
+        "  █   [ SYS  ]  %-36s █\n"
+        "  █   [ VER  ]  %-36s █\n"
+        "  █                                                  █\n"
+        "  █   > HIGH-PERFORMANCE C PURE ENGINE               █\n"
+        "  █   > CYBER WARFARE // OFFENSIVE SECURITY          █\n"
+        "  █   > ACCESS GRANTED: OPERATOR                     █\n"
+        "  █                                                  █\n"
+        "  ▀████████████████████████████████████████████████▀\n",
+        RATM_NAME,
+        RATM_VERSION
+    );
+
+    printf(
+        "\n"
+        "  [!] INITIALIZING TACTICAL ENVIRONMENT...\n"
+        "  [#] SYSTEM READY // NO COMPROMISE\n\n"
+    );
+
     printf(COLOR_RESET);
 }
 
